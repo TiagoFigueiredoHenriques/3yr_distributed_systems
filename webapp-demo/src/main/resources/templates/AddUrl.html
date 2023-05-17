@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>GoogolAddUrl</title>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/main.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/app.js"></script>
+</head>
+<body>
+<h1>Add a new URL</h1>
+<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! This application relies on Javascript being
+    enabled. Please enable Javascript and reload this page!</h2></noscript>
+<div id="main-content" class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <form action="#" th:action="@{/addurl}" th:object="${Url}" method="post" class="form-inline">
+                <div class="form-group">
+                    <label for="url">New URL: </label>
+                    <input type="text" th:field="*{url}" id="url" class="form-control" placeholder=" Write the new url here... ">
+                </div>
+                <div class="form-group">
+                    <input type = "submit" value="Add" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

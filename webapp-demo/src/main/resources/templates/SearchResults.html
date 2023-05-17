@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>GoogolSearchResults</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/main.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/app.js"></script>
+</head>
+<body>
+<h1>Search Results</h1>
+<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! This application relies on Javascript being
+    enabled. Please enable Javascript and reload this page!</h2></noscript>
+<table>
+    <tbody>
+    <tr th:each="url, iStat : ${arrayUrls}" th:if="${iStat.index ?: 0} >= ${startIndex ?: 0} and ${iStat.index ?: 0} &lt; ${startIndex ?: 0 + 10}">
+        <td>
+            <b>Link:</b> <a th:href="${url.link}" th:text="${url.link}" ></a>
+            <br/>
+            <b>Title:</b> <span th:text="${url.title}"></span>
+            <br/>
+            <b>Quote:</b> <span th:text="${url.quote}"></span>
+            <br/>
+            <b>Number of Connections:</b> <span th:text="${url.nConnections}"></span>
+            <br/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <form class="form-inline" th:action="@{/searchresults}" method="get">
+                <input type="hidden" name="startIndex" th:value="${startIndex ?: 0 + 10}" />
+                <input type="hidden" name="arrayUrls" th:value="${arrayUrls}" />
+                <input type="submit" value ="Next 10 links"/>
+            </form>
+        </td>
+        <td>
+            <form class="form-inline">
+                <div class="form-group">
+                    <button type = "button" th:onclick="|window.location.href='resultsconnections'| "> Show result connections </button>
+                </div>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
