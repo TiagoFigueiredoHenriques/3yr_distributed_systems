@@ -67,35 +67,35 @@ public class Storage_Barrel extends Thread implements RemoteInterfaceSB,Serializ
         HashMap<String, Set<String>> result = null;
 
         try {
-            fileIn1 = new FileInputStream(filename1);
-            fileIn2 = new FileInputStream(filename2);
-            fileIn3 = new FileInputStream(filename3);
+            File file1 = new File(filename1);
+            File file2 = new File(filename2);
+            File file3 = new File(filename3);
 
-            int fileSize1 = fileIn1.available();
-            int fileSize2 = fileIn2.available();
-            int fileSize3 = fileIn3.available();
+            long fileSize1 = file1.length();
+            long fileSize2 = file2.length();
+            long fileSize3 = file3.length();
 
-            if (fileSize1 > fileSize2) {
+            File last;
+
+            if(fileSize1 > fileSize2){
+
                 if (fileSize1 > fileSize3) {
-                    ObjectInputStream in = new ObjectInputStream(fileIn1);
-                    result = (HashMap<String, Set<String>>) in.readObject();
-                    in.close();
-                } else {
-                    ObjectInputStream in = new ObjectInputStream(fileIn3);
-                    result = (HashMap<String, Set<String>>) in.readObject();
-                    in.close();
+                    last = file1;
+                }else{
+                    last = file3;
                 }
-            } else {
-                if (fileSize2 > fileSize3) {
-                    ObjectInputStream in = new ObjectInputStream(fileIn2);
-                    result = (HashMap<String, Set<String>>) in.readObject();
-                    in.close();
-                } else {
-                    ObjectInputStream in = new ObjectInputStream(fileIn3);
-                    result = (HashMap<String, Set<String>>) in.readObject();
-                    in.close();
+            }else{
+                if(fileSize2 > fileSize3){
+                    last = file2;
+                }else{
+                    last = file3;
                 }
             }
+
+            FileInputStream fileIn = new FileInputStream(last);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            result = (HashMap<String, Set<String>>) in.readObject();
+            in.close();
 
             return  result;
         }catch (FileNotFoundException e) {
@@ -104,61 +104,44 @@ public class Storage_Barrel extends Thread implements RemoteInterfaceSB,Serializ
             e.printStackTrace();
         }  catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
-        } finally {
-            try {
-                if (fileIn1 != null) {
-                    fileIn1.close();
-                }
-                if (fileIn2 != null) {
-                    fileIn2.close();
-                }
-                if (fileIn3 != null) {
-                    fileIn3.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
         return result;
     }
 
     public final HashMap<String, UrlInfo> getMapFromLargerFileUrlInfo(String filename1, String filename2, String filename3) {
-        FileInputStream fileIn1 = null;
-        FileInputStream fileIn2 = null;
-        FileInputStream fileIn3 = null;
 
         HashMap<String, UrlInfo> result = null;
 
         try {
-            fileIn1 = new FileInputStream(filename1);
-            fileIn2 = new FileInputStream(filename2);
-            fileIn3 = new FileInputStream(filename3);
+            File file1 = new File(filename1);
+            File file2 = new File(filename2);
+            File file3 = new File(filename3);
 
-            int fileSize1 = fileIn1.available();
-            int fileSize2 = fileIn2.available();
-            int fileSize3 = fileIn3.available();
+            long fileSize1 = file1.length();
+            long fileSize2 = file2.length();
+            long fileSize3 = file3.length();
 
-            if (fileSize1 > fileSize2) {
+            File last;
+
+            if(fileSize1 > fileSize2){
+
                 if (fileSize1 > fileSize3) {
-                    ObjectInputStream in = new ObjectInputStream(fileIn1);
-                    result = (HashMap<String, UrlInfo>) in.readObject();
-                    in.close();
-                } else {
-                    ObjectInputStream in = new ObjectInputStream(fileIn3);
-                    result = (HashMap<String, UrlInfo>) in.readObject();
-                    in.close();
+                    last = file1;
+                }else{
+                    last = file3;
                 }
-            } else {
-                if (fileSize2 > fileSize3) {
-                    ObjectInputStream in = new ObjectInputStream(fileIn2);
-                    result = (HashMap<String, UrlInfo>) in.readObject();
-                    in.close();
-                } else {
-                    ObjectInputStream in = new ObjectInputStream(fileIn3);
-                    result = (HashMap<String, UrlInfo>) in.readObject();
-                    in.close();
+            }else{
+                if(fileSize2 > fileSize3){
+                    last = file2;
+                }else{
+                    last = file3;
                 }
             }
+
+            FileInputStream fileIn = new FileInputStream(last);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            result = (HashMap<String, UrlInfo>) in.readObject();
+            in.close();
 
             return  result;
         }catch (FileNotFoundException e) {
@@ -167,20 +150,6 @@ public class Storage_Barrel extends Thread implements RemoteInterfaceSB,Serializ
             e.printStackTrace();
         }  catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
-        } finally {
-            try {
-                if (fileIn1 != null) {
-                    fileIn1.close();
-                }
-                if (fileIn2 != null) {
-                    fileIn2.close();
-                }
-                if (fileIn3 != null) {
-                    fileIn3.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
         return result;
     }
@@ -445,21 +414,7 @@ public class Storage_Barrel extends Thread implements RemoteInterfaceSB,Serializ
             try{
                 FileOutputStream fileOut = new FileOutputStream(filename);
                 ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            /*
-            if(i == 0){
-                    synchronized(index){
-                        out.writeObject(index);
-                    }
-                }else if(i == 1){
-                    synchronized(urlInfoMap){
-                        out.writeObject(urlInfoMap);
-                    }
-                }else{
-                    synchronized(urlConnections){
-                        out.writeObject(urlConnections);
-                    }
-                }
-                */
+
                 switch (i) {
                     case 0 -> out.writeObject(index);
                     case 1 -> out.writeObject(urlInfoMap);

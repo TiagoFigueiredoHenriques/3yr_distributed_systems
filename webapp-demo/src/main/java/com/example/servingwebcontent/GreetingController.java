@@ -183,7 +183,17 @@ public class GreetingController {
 
             List<UrlInfo> urls = ri.search(keywords.getKeywords());
             Collections.addAll(urls);
+
+            if((keywords.getIndex()+1)*10 <= urls.size()) {
+                urls = urls.subList(keywords.getIndex() * 10, (keywords.getIndex() + 1) * 10);
+            } else if (keywords.getIndex()*10 <= urls.size()) {
+                urls = urls.subList(keywords.getIndex() * 10, urls.size());
+            }else{
+                urls = new ArrayList<>();
+            }
+            
             model.addAttribute("arrayUrls", urls);
+            model.addAttribute("Keywords", keywords);
 
             return "SearchResults";
 
@@ -195,6 +205,7 @@ public class GreetingController {
         return "SearchResults";
     }
 
+    /*
     @GetMapping("/searchresults")
     public String SearchResultsMyGod(Model model, @RequestParam(name = "startIndex", defaultValue = "0") Integer startIndex, @RequestParam(name = "arrayUrls")  String [] arrayUrls) {
         model.addAttribute("arrayUrls", arrayUrls);
@@ -202,6 +213,8 @@ public class GreetingController {
 
         return "SearchResults";
     }
+    */
+
 
     @GetMapping("/resultsconnections")
     public String ResultsConnections() {

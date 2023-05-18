@@ -16,7 +16,7 @@
     enabled. Please enable Javascript and reload this page!</h2></noscript>
 <table>
     <tbody>
-    <tr th:each="url, iStat : ${arrayUrls}" th:if="${iStat.index ?: 0} >= ${startIndex ?: 0} and ${iStat.index ?: 0} &lt; ${startIndex ?: 0 + 10}">
+    <tr th:each="url, iStat : ${arrayUrls}">
         <td>
             <b>Link:</b> <a th:href="${url.link}" th:text="${url.link}" ></a>
             <br/>
@@ -30,9 +30,9 @@
     </tr>
     <tr>
         <td>
-            <form class="form-inline" th:action="@{/searchresults}" method="get">
-                <input type="hidden" name="startIndex" th:value="${startIndex ?: 0 + 10}" />
-                <input type="hidden" name="arrayUrls" th:value="${arrayUrls}" />
+            <form action="#" th:action="@{/searchkeywords}" th:object="${Keywords}" method="post" class="form-inline">
+                <input type="hidden" th:field="*{keywords}" th:value="${Keywords.getKeywords()}">
+                <input type="hidden" th:field="*{index}" th:value="${Keywords.indexPlus1()}" />
                 <input type="submit" value ="Next 10 links"/>
             </form>
         </td>
