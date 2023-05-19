@@ -40,47 +40,13 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.util.HtmlUtils;
 
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.util.HtmlUtils;
+
 @Controller
 public class GreetingController {
-
-    /**
-    @MessageMapping("/admin")
-    @SendTo("/status/servers")
-    public Servers servers() throws Exception {
-        Servers s = new Servers();
-
-        s.setDownloader(false);
-        s.setQueue(false);
-        s.setSB1(false);
-        s.setSB2(false);
-        s.setSB3(false);
-
-        List<Boolean> status;
-
-        do{
-            try {
-
-                RemoteInterface ri = (RemoteInterface) LocateRegistry.getRegistry(7000).lookup("RMI_Server");
-
-                status = ri.admin(s.isDownloader(),s.isQueue(),s.isSB1(),s.isSB2(),s.isSB3());
-
-                s.setDownloader(status.get(0));
-                s.setQueue(status.get(1));
-                s.setSB1(status.get(2));
-                s.setSB2(status.get(3));
-                s.setSB3(status.get(4));
-
-                return s;
-
-            } catch (Exception e) {
-                System.out.println("Exception in main: " + e);
-                e.printStackTrace();
-            }
-        }while(true);
-
-    }
-
-    **/
 
     @GetMapping("/")
     public String redirect() {
@@ -230,8 +196,6 @@ public class GreetingController {
             }else{
                 urls = new ArrayList<>();
             }
-
-            urls.get(0).printPointConnections();
 
             model.addAttribute("arrayUrls", urls);
             model.addAttribute("Keywords", keywords);
@@ -392,5 +356,39 @@ public class GreetingController {
             e.printStackTrace();
         }
     }
+
+    /*
+        @MessageMapping("/admin")
+        @SendTo("/all/messages")
+        public Message send(Message message) throws InterruptedException {
+            System.out.println("Message received " + message);
+
+
+            do{
+                try {
+
+                    RemoteInterface ri = (RemoteInterface) LocateRegistry.getRegistry(7000).lookup("RMI_Server");
+
+                    status = ri.admin(s.isDownloader(),s.isQueue(),s.isSB1(),s.isSB2(),s.isSB3());
+
+                    s.setDownloader(status.get(0));
+                    s.setQueue(status.get(1));
+                    s.setSB1(status.get(2));
+                    s.setSB2(status.get(3));
+                    s.setSB3(status.get(4));
+
+                    return message;
+
+                } catch (Exception e) {
+                    System.out.println("Exception in main: " + e);
+                    e.printStackTrace();
+                }
+            }while(true);
+
+
+
+            return message;
+        }
+        */
 
 }
