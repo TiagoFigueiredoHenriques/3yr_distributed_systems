@@ -37,11 +37,13 @@
             </form>
         </td>
         <td>
-            <form class="form-inline">
-                <div class="form-group">
-                    <button type = "button" th:onclick="|window.location.href='resultsconnections'| "> Show result connections </button>
-                </div>
-            </form>
+            <div class="form-group">
+                <form action="#" th:action="@{/resultsconnections}" th:object="${Keywords}" method="post" class="form-inline">
+                    <input type="hidden" th:field="*{keywords}" th:value="${Keywords.getKeywords()}">
+                    <input type="hidden" th:field="*{index}" th:value="${Keywords.indexMinus1()}" />
+                    <button type="submit">Show connections</button>
+                </form>
+            </div>
         </td>
     </tr>
     </tbody>

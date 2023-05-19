@@ -16,11 +16,16 @@
     enabled. Please enable Javascript and reload this page!</h2></noscript>
 <table>
     <tbody>
-    <tr th:each="url, iStat : ${arrayUrls}" th:if="${iStat.index ?: 0} >= ${startIndex ?: 0} and ${iStat.index ?: 0} &lt; ${startIndex ?: 0 + 10}">
+    <tr th:each="url, iStat : ${arrayUrls}">
         <td>
-            <b>Link:</b> <a th:href="${url.link}" th:text="${url.link}" ></a>
+            <b>Link:</b> <a th:href="${url.link}" th:text="${url.link}"></a>
             <br/>
-            <b>Connections:</b> <a th:href="${url.sPointConnections()}" th:text="${url.sPointConnections()}" ></a>
+            <b>Connections:</b>
+            <ul>
+                <li th:each="connection : ${url.sPointConnections()}">
+                    <a th:href="${connection}" th:text="${connection}"></a>
+                </li>
+            </ul>
             <br/>
         </td>
     </tr>

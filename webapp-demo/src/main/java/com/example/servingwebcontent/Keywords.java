@@ -21,6 +21,9 @@ public class Keywords {
     public int indexPlus1(){
         return index++;
     }
+    public int indexMinus1(){
+        return index--;
+    }
 
     public void setIndex(int index) {
         this.index = index;

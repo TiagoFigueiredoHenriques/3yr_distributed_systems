@@ -191,7 +191,7 @@ public class GreetingController {
             }else{
                 urls = new ArrayList<>();
             }
-            
+
             model.addAttribute("arrayUrls", urls);
             model.addAttribute("Keywords", keywords);
 
@@ -205,19 +205,44 @@ public class GreetingController {
         return "SearchResults";
     }
 
-    /*
-    @GetMapping("/searchresults")
-    public String SearchResultsMyGod(Model model, @RequestParam(name = "startIndex", defaultValue = "0") Integer startIndex, @RequestParam(name = "arrayUrls")  String [] arrayUrls) {
-        model.addAttribute("arrayUrls", arrayUrls);
-        model.addAttribute("startIndex", startIndex);
-
-        return "SearchResults";
-    }
-    */
-
 
     @GetMapping("/resultsconnections")
-    public String ResultsConnections() {
+    public String ResultsConnections(@ModelAttribute Keywords keywords,Model model) {
+        model.addAttribute("Keywords", keywords);
+        return "ResultsConnections";
+    }
+
+    @PostMapping("/resultsconnections")
+    public String ResultsConnectionsShow(@ModelAttribute Keywords keywords,Model model) {
+        model.addAttribute("Keywords", keywords);
+
+        try {
+
+            RemoteInterface ri = (RemoteInterface) LocateRegistry.getRegistry(7000).lookup("RMI_Server");
+
+            List<UrlInfo> urls = ri.search(keywords.getKeywords());
+            Collections.addAll(urls);
+
+            if((keywords.getIndex()+1)*10 <= urls.size()) {
+                urls = urls.subList(keywords.getIndex() * 10, (keywords.getIndex() + 1) * 10);
+            } else if (keywords.getIndex()*10 <= urls.size()) {
+                urls = urls.subList(keywords.getIndex() * 10, urls.size());
+            }else{
+                urls = new ArrayList<>();
+            }
+
+            urls.get(0).printPointConnections();
+
+            model.addAttribute("arrayUrls", urls);
+            model.addAttribute("Keywords", keywords);
+
+            return "ResultsConnections";
+
+        } catch (Exception e) {
+            System.out.println("Exception in main: " + e);
+            e.printStackTrace();
+        }
+
         return "ResultsConnections";
     }
 

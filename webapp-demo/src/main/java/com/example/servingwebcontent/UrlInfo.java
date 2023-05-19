@@ -51,7 +51,11 @@ public class UrlInfo implements Serializable {
     }
 
     public String sPointConnections(){
-        return ""+pointConnections;
+        String f = "";
+        for(String s:pointConnections) {
+            f += s + " ";
+        }
+        return f;
     }
 }
 
